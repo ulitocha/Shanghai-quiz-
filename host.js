@@ -112,6 +112,7 @@ function render() {
             <button class="btn light" id="reset">Очистить список</button>
           </div>
         </div>
+        <img class="map" src="map.jpg" alt="Карта Шанхая" onerror="this.remove()">
       </div></div>`;
     new QRCode(document.getElementById("qr"), { text: playUrl, width: 240, height: 240 });
     document.getElementById("start").onclick = start;
