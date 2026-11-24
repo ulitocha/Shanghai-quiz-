@@ -54,6 +54,15 @@ function next() {
   }
 }
 
+function endGame() {
+  if (confirm("Завершить игру и показать победителей?")) db.ref("game/state").set("final");
+}
+
+function bindEnd() {
+  const b = document.getElementById("end");
+  if (b) b.onclick = endGame;
+}
+
 function reset() {
   db.ref().update({ players: null, answers: null, game: { state: "lobby" } });
 }
@@ -129,9 +138,10 @@ function render() {
         <div class="row"><span class="han">${place[0]}</span><span class="tag">${place[1]}</span></div>
         <div class="q">${esc(Q.q)}</div>
         ${optsHtml(Q, false)}
-        <div class="row"><button class="btn light" id="rv">Показать ответ</button></div>
+        <div class="row"><button class="btn light" id="rv">Показать ответ</button><button class="btn light" id="end">Завершить игру</button></div>
       </div>`;
     document.getElementById("rv").onclick = reveal;
+    bindEnd();
     tick();
     return;
   }
@@ -143,9 +153,10 @@ function render() {
         <div class="q">${esc(Q.q)}</div>
         ${optsHtml(Q, true)}
         <p class="big">${esc(Q.f)}</p>
-        <div class="row"><button class="btn" id="bd">Рейтинг</button></div>
+        <div class="row"><button class="btn" id="bd">Рейтинг</button><button class="btn light" id="end">Завершить игру</button></div>
       </div>`;
     document.getElementById("bd").onclick = () => db.ref("game/state").set("board");
+    bindEnd();
     return;
   }
 
@@ -155,9 +166,10 @@ function render() {
       <div class="card">
         <h1>Рейтинг</h1>
         ${boardHtml(5)}
-        <div class="row"><button class="btn" id="nx">${last ? "Итоги" : "Следующий вопрос"}</button></div>
+        <div class="row"><button class="btn" id="nx">${last ? "Итоги" : "Следующий вопрос"}</button>${last ? "" : '<button class="btn light" id="end">Завершить игру</button>'}</div>
       </div>`;
     document.getElementById("nx").onclick = next;
+    bindEnd();
     return;
   }
 
